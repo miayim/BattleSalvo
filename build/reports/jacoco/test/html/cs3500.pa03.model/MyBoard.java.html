@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MyBoard.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pa04</a> &gt; <a href="index.source.html" class="el_package">cs3500.pa03.model</a> &gt; <span class="el_source">MyBoard.java</span></div><h1>MyBoard.java</h1><pre class="source lang-java linenums">package cs3500.pa03.model;
+
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+/**
+ * Class to represent a players own board
+ */
+public class MyBoard implements Iboard {
+  private final int height;
+  private final int width;
+  private AgamePiece[][] board;
+  private final Random random;
+
+  /**
+   * Constructor to set up the board given the dimensions and ships and a random for testing
+   *
+   * @param height height of the board
+   * @param width  width of the board
+   * @param ships  list ships on the board
+   * @param rand   random for testing
+   */
+<span class="fc" id="L25">  public MyBoard(int height, int width, ArrayList&lt;AgamePiece&gt; ships, Random rand) {</span>
+<span class="fc" id="L26">    this.random = rand;</span>
+<span class="fc" id="L27">    this.height = height;</span>
+<span class="fc" id="L28">    this.width = width;</span>
+<span class="fc" id="L29">    generateBoard(ships);</span>
+<span class="fc" id="L30">  }</span>
+
+  /**
+   * Constructor to set up the board
+   *
+   * @param height height of the board
+   * @param width  width of the board
+   * @param ships  list of ships on the board
+   */
+  public MyBoard(int height, int width, ArrayList&lt;AgamePiece&gt; ships) {
+<span class="fc" id="L40">    this(height, width, ships, new Random());</span>
+<span class="fc" id="L41">  }</span>
+
+  /**
+   * Method to report what shots hit the ships on the board
+   *
+   * @param opponetShots list of shots the opponent sent
+   * @return returns the successful shots
+   */
+  @Override
+  public List&lt;Coord&gt; reportDamage(List&lt;Coord&gt; opponetShots) {
+<span class="fc" id="L51">    ArrayList&lt;Coord&gt; successfulHits = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L52">    takeDamage(opponetShots, Status.HIT);</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">    for (Coord shot : opponetShots) {</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">      if (!board[shot.y][shot.x].isWater()) {</span>
+<span class="fc" id="L55">        successfulHits.add(shot);</span>
+      }
+<span class="fc" id="L57">    }</span>
+
+<span class="fc" id="L59">    return successfulHits;</span>
+  }
+
+  /**
+   * method to generate a board given a list of ships
+   *
+   * @param ships list of ships to place on the board
+   */
+  @Override
+  public void generateBoard(ArrayList&lt;AgamePiece&gt; ships) {
+<span class="fc" id="L69">    board = new AgamePiece[height][width];</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">    for (int i = 0; i &lt; height; i++) {</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">      for (int j = 0; j &lt; width; j++) {</span>
+<span class="fc" id="L72">        board[i][j] = new Water();</span>
+      }
+    }
+
+<span class="fc" id="L76">    placeShips(ships);</span>
+
+<span class="fc" id="L78">  }</span>
+
+  /**
+   * Method to show the board as a String
+   *
+   * @return returns a string of the board
+   */
+  @Override
+  public String showBoard() {
+<span class="fc" id="L87">    StringBuilder boardString = new StringBuilder();</span>
+
+<span class="fc bfc" id="L89" title="All 2 branches covered.">    for (int y = 0; y &lt; height; y++) {</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">      for (int x = 0; x &lt; width; x++) {</span>
+<span class="fc" id="L91">        boardString.append(board[y][x].symbol(new Coord(x, y)));</span>
+      }
+<span class="fc" id="L93">      boardString.append(&quot;\n&quot;);</span>
+    }
+
+<span class="fc" id="L96">    return boardString.toString();</span>
+  }
+
+  /**
+   * Method to take damage to the board given the type of damage
+   *
+   * @param opponentShots shots the opponent took
+   * @param damageType    type of damage as an enum Status
+   */
+  @Override
+  public void takeDamage(List&lt;Coord&gt; opponentShots, Status damageType) {
+<span class="fc bfc" id="L107" title="All 2 branches covered.">    for (Coord shot : opponentShots) {</span>
+<span class="fc" id="L108">      board[shot.y][shot.x].hit(shot);</span>
+<span class="fc" id="L109">    }</span>
+<span class="fc" id="L110">  }</span>
+
+  /**
+   * Method to see if the coordinates are valid to place one the board
+   *
+   * @param points array of the coordinates
+   * @return returns a boolean of if the placement is valid or not
+   */
+  private boolean validPlacement(Coord[] points) {
+<span class="fc bfc" id="L119" title="All 2 branches covered.">    for (Coord coord : points) {</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">      if (!onBoard(coord)) {</span>
+<span class="fc" id="L121">        return false;</span>
+      }
+    }
+
+<span class="fc bfc" id="L125" title="All 2 branches covered.">    for (Coord coord : points) {</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">      if (!board[coord.y][coord.x].isWater()) {</span>
+<span class="fc" id="L127">        return false;</span>
+      }
+    }
+
+<span class="fc" id="L131">    return true;</span>
+  }
+
+  /**
+   * Places the ships on the board
+   *
+   * @param ships array list of ships to place
+   */
+  private void placeShips(ArrayList&lt;AgamePiece&gt; ships) {
+<span class="fc bfc" id="L140" title="All 2 branches covered.">    for (AgamePiece ship : ships) {</span>
+<span class="fc" id="L141">      int x = random.nextInt(height);</span>
+<span class="fc" id="L142">      int y = random.nextInt(width);</span>
+<span class="fc" id="L143">      Coord randomCord = new Coord(x, y);</span>
+<span class="fc" id="L144">      Coord[] shipCords = ship.placeCoordinates(randomCord, random.nextBoolean());</span>
+
+<span class="fc bfc" id="L146" title="All 2 branches covered.">      while (!validPlacement(shipCords)) {</span>
+<span class="fc" id="L147">        x = random.nextInt(height);</span>
+<span class="fc" id="L148">        y = random.nextInt(width);</span>
+<span class="fc" id="L149">        randomCord = new Coord(x, y);</span>
+<span class="fc" id="L150">        shipCords = ship.placeCoordinates(randomCord, random.nextBoolean());</span>
+      }
+
+<span class="fc bfc" id="L153" title="All 2 branches covered.">      for (Coord coordinate : shipCords) {</span>
+<span class="fc" id="L154">        board[coordinate.y][coordinate.x] = ship;</span>
+      }
+<span class="fc" id="L156">    }</span>
+<span class="fc" id="L157">  }</span>
+
+  /**
+   * Determines if a coordinate is on the board
+   *
+   * @param coord shot as a coordinate
+   * @return returns a boolean of if the shot is on board
+   */
+  public boolean onBoard(Coord coord) {
+<span class="fc bfc" id="L166" title="All 8 branches covered.">    return coord.x &gt;= 0 &amp;&amp; coord.x &lt; width &amp;&amp; coord.y &gt;= 0 &amp;&amp; coord.y &lt; height;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

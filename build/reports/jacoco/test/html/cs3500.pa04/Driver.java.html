@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Driver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pa04</a> &gt; <a href="index.source.html" class="el_package">cs3500.pa04</a> &gt; <span class="el_source">Driver.java</span></div><h1>Driver.java</h1><pre class="source lang-java linenums">package cs3500.pa04;
+
+import cs3500.pa03.controller.Controller;
+import cs3500.pa04.controller.AiController;
+import cs3500.pa04.controller.ProxyController;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
+
+/**
+ * To represent the driver and entry point of BattleSalvo
+ */
+<span class="nc" id="L13">public class Driver {</span>
+  /**
+   * This method connects to the server at the given host and port, builds a proxy referee
+   * to handle communication with the server, and sets up a client player.
+   *
+   * @param host the server host
+   * @param port the server port
+   * @throws IOException if there is a communication issue with the server
+   */
+  private static void runClient(String host, int port)
+      throws IOException, IllegalStateException {
+<span class="nc" id="L24">    Socket server = new Socket(host, port);</span>
+<span class="nc" id="L25">    ProxyController proxyDealer = new ProxyController(server, new AiController());</span>
+
+<span class="nc" id="L27">    proxyDealer.run();</span>
+<span class="nc" id="L28">  }</span>
+
+  /**
+   * The main entrypoint into the code as the Client. Given a host and port as parameters, the
+   * client is run. If there is an issue with the client or connecting,
+   * an error message will be printed.
+   *
+   * @param args The expected parameters are the server's host and port
+   */
+  public static void main(String[] args) {
+<span class="nc bnc" id="L38" title="All 2 branches missed.">    if (args.length == 2) {</span>
+<span class="nc" id="L39">      String host = args[0];</span>
+<span class="nc" id="L40">      int port = Integer.parseInt(args[1]);</span>
+      try {
+<span class="nc" id="L42">        Driver.runClient(host, port);</span>
+<span class="nc" id="L43">      } catch (IOException e) {</span>
+<span class="nc" id="L44">        throw new RuntimeException(e);</span>
+
+<span class="nc" id="L46">      }</span>
+<span class="nc" id="L47">    } else {</span>
+<span class="nc" id="L48">      Controller controller = new Controller(new InputStreamReader(System.in), System.out);</span>
+<span class="nc" id="L49">      controller.playGame();</span>
+    }
+<span class="nc" id="L51">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

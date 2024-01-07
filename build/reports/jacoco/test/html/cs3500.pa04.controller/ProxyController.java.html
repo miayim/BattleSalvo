@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProxyController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pa04</a> &gt; <a href="index.source.html" class="el_package">cs3500.pa04.controller</a> &gt; <span class="el_source">ProxyController.java</span></div><h1>ProxyController.java</h1><pre class="source lang-java linenums">package cs3500.pa04.controller;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import cs3500.pa03.model.AgamePiece;
+import cs3500.pa03.model.Coord;
+import cs3500.pa04.json.EndGameArguments;
+import cs3500.pa04.json.FleetJson;
+import cs3500.pa04.json.JoinArgumentsJson;
+import cs3500.pa04.json.JsonUtils;
+import cs3500.pa04.json.MessageJson;
+import cs3500.pa04.json.SetupRequestRecord;
+import cs3500.pa04.json.ShipJson;
+import cs3500.pa04.json.VolleyJson;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * To represent the controller that delegates between the AI players and the BattleSalvo
+ * implementation
+ */
+public class ProxyController {
+  private final Socket server;
+  private final InputStream in;
+  private final PrintStream out;
+  private final AiController ai;
+<span class="fc" id="L32">  private final ObjectMapper mapper = new ObjectMapper();</span>
+
+  /**
+   * Construct an instance of a ProxyController.
+   *
+   * @param server the socket connection to the server
+   * @param ai     the instance of the AI
+   * @throws IOException if IO Exception occurs
+   */
+<span class="fc" id="L41">  public ProxyController(Socket server, AiController ai) throws IOException {</span>
+<span class="fc" id="L42">    this.server = server;</span>
+<span class="fc" id="L43">    this.in = server.getInputStream();</span>
+<span class="fc" id="L44">    this.out = new PrintStream(server.getOutputStream());</span>
+<span class="fc" id="L45">    this.ai = ai;</span>
+<span class="fc" id="L46">  }</span>
+
+  /**
+   * Listens for messages from the server as JSON in the format of a MessageJSON. When a complete
+   * message is sent by the server, the message is parsed and then delegated to the corresponding
+   * helper method for each message. This method stops when the connection to the server is closed
+   * or an IOException is thrown from parsing malformed JSON.
+   */
+  public void run() {
+    try {
+<span class="fc" id="L56">      JsonParser parser = this.mapper.getFactory().createParser(this.in);</span>
+
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">      while (!this.server.isClosed()) {</span>
+<span class="fc" id="L59">        MessageJson message = parser.readValueAs(MessageJson.class);</span>
+<span class="fc" id="L60">        delegateMessage(message);</span>
+<span class="fc" id="L61">      }</span>
+<span class="fc" id="L62">    } catch (IOException e) {</span>
+      // Disconnected from server or parsing exception
+<span class="nc" id="L64">    }</span>
+<span class="fc" id="L65">  }</span>
+
+  /**
+   * Determines the type of request the server has sent and delegates to the
+   * corresponding helper method with the message arguments.
+   *
+   * @param message the MessageJSON used to determine what the server has sent
+   */
+  private void delegateMessage(MessageJson message) {
+<span class="fc" id="L74">    String name = message.methodName();</span>
+<span class="fc" id="L75">    JsonNode arguments = message.arguments();</span>
+
+<span class="fc bfc" id="L77" title="All 2 branches covered.">    if (&quot;join&quot;.equals(name)) {</span>
+<span class="fc" id="L78">      handleJoin();</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">    } else if (&quot;setup&quot;.equals(name)) {</span>
+<span class="fc" id="L80">      handleSetup(arguments);</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">    } else if (&quot;take-shots&quot;.equals(name)) {</span>
+<span class="fc" id="L82">      handleTakeShots();</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">    } else if (&quot;report-damage&quot;.equals(name)) {</span>
+<span class="fc" id="L84">      handleReportDamage(arguments);</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">    } else if (&quot;successful-hits&quot;.equals(name)) {</span>
+<span class="fc" id="L86">      handleSuccessfulHits(arguments);</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">    } else if (&quot;end-game&quot;.equals(name)) {</span>
+<span class="fc" id="L88">      handleEndGame(arguments);</span>
+    } else {
+<span class="fc" id="L90">      throw new IllegalStateException(&quot;Invalid message name&quot;);</span>
+    }
+<span class="fc" id="L92">  }</span>
+
+  /**
+   * Handles the join message arguments to join the server
+   *
+   */
+  private void handleJoin() {
+<span class="fc" id="L99">    JoinArgumentsJson joinArgumentsJson = new JoinArgumentsJson(&quot;miayim&quot;, &quot;SINGLE&quot;);</span>
+
+<span class="fc" id="L101">    this.respond(&quot;join&quot;, joinArgumentsJson);</span>
+<span class="fc" id="L102">  }</span>
+
+  /**
+   * Gets a list of ShipJsons from the list of ships
+   *
+   * @param ships a list of ships on the board
+   */
+  private List&lt;ShipJson&gt; getShipJsons(List&lt;AgamePiece&gt; ships) {
+<span class="fc" id="L110">    ArrayList&lt;ShipJson&gt; shipJsons = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">    for (AgamePiece ship : ships) {</span>
+<span class="fc" id="L112">      shipJsons.add(ship.toJson());</span>
+<span class="fc" id="L113">    }</span>
+<span class="fc" id="L114">    return shipJsons;</span>
+  }
+
+  /**
+   * Handles the setup of the boards and responds with a fleet JSON
+   *
+   * @param arguments JSON node
+   */
+  private void handleSetup(JsonNode arguments) {
+<span class="fc" id="L123">    SetupRequestRecord setupJson = this.mapper.convertValue(arguments, SetupRequestRecord.class);</span>
+
+<span class="fc" id="L125">    List&lt;AgamePiece&gt; ships = this.ai.setup(setupJson.height(), setupJson.width(),</span>
+<span class="fc" id="L126">        setupJson.getSpecs());</span>
+<span class="fc" id="L127">    List&lt;ShipJson&gt; shipJsons = this.getShipJsons(ships);</span>
+<span class="fc" id="L128">    FleetJson fleetJson = new FleetJson(shipJsons);</span>
+
+<span class="fc" id="L130">    this.respond(&quot;setup&quot;, fleetJson);</span>
+<span class="fc" id="L131">  }</span>
+
+  /**
+   * Handles response to the server based on the name and record
+   *
+   * @param name the name of the record
+   * @param response the response record
+   */
+  private void respond(String name, Record response) {
+<span class="fc" id="L140">    JsonNode jsonResponse = JsonUtils.serializeRecord(name, response);</span>
+<span class="fc" id="L141">    this.out.println(jsonResponse);</span>
+<span class="fc" id="L142">  }</span>
+
+  /**
+   * Handles response to the server based on the record
+   *
+   * @param name the name of the record
+   */
+  private void respond(String name) {
+<span class="fc" id="L150">    JsonNode jsonResponse = JsonUtils.serializeRecord(name);</span>
+<span class="fc" id="L151">    this.out.println(jsonResponse);</span>
+<span class="fc" id="L152">  }</span>
+
+  /**
+   * Handles shot taking in the game of Battle Salvo by returning a volley
+   *
+   */
+  private void handleTakeShots() {
+<span class="fc" id="L159">    List&lt;Coord&gt; shots = this.ai.getShots();</span>
+
+<span class="fc" id="L161">    VolleyJson volleyJson = new VolleyJson(shots);</span>
+
+
+<span class="fc" id="L164">    this.respond(&quot;take-shots&quot;, volleyJson);</span>
+<span class="fc" id="L165">  }</span>
+
+  /**
+   * Handles the successful hits on the opponent board
+   *
+   * @param arguments JSON node
+   */
+  private void handleSuccessfulHits(JsonNode arguments) {
+<span class="fc" id="L173">    VolleyJson successfulHitsJson = this.mapper.convertValue(arguments,</span>
+        VolleyJson.class);
+<span class="fc" id="L175">    List&lt;Coord&gt; shots = successfulHitsJson.coords();</span>
+<span class="fc" id="L176">    this.ai.successfulHits(shots);</span>
+
+<span class="fc" id="L178">    respond(&quot;successful-hits&quot;);</span>
+<span class="fc" id="L179">  }</span>
+
+  /**
+   * Handles the damage done on this board
+   *
+   * @param arguments JSON node
+   */
+  private void handleReportDamage(JsonNode arguments) {
+<span class="fc" id="L187">    VolleyJson reportDamageJson = this.mapper.convertValue(arguments,</span>
+        VolleyJson.class);
+<span class="fc" id="L189">    List&lt;Coord&gt; shots = reportDamageJson.coords();</span>
+
+<span class="fc" id="L191">    List&lt;Coord&gt; damage = this.ai.reportDamage(shots);</span>
+
+<span class="fc" id="L193">    VolleyJson volleyJson = new VolleyJson(damage);</span>
+
+
+<span class="fc" id="L196">    respond(&quot;report-damage&quot;, volleyJson);</span>
+
+<span class="fc" id="L198">  }</span>
+
+  /**
+   * Handles the end of a game of BattleSalvo
+   *
+   * @param arguments JSON node
+   */
+  private void handleEndGame(JsonNode arguments) {
+<span class="fc" id="L206">    EndGameArguments endGameJson = this.mapper.convertValue(arguments,</span>
+        EndGameArguments.class);
+<span class="fc" id="L208">    this.ai.endGame();</span>
+
+<span class="fc" id="L210">    respond(&quot;end-game&quot;);</span>
+<span class="fc" id="L211">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pa04</a> &gt; <a href="index.source.html" class="el_package">cs3500.pa03.controller</a> &gt; <span class="el_source">Controller.java</span></div><h1>Controller.java</h1><pre class="source lang-java linenums">package cs3500.pa03.controller;
+
+
+import cs3500.pa03.model.AgamePiece;
+import cs3500.pa03.model.AiPlayer;
+import cs3500.pa03.model.Coord;
+import cs3500.pa03.model.GameResult;
+import cs3500.pa03.model.ManualPlayer;
+import cs3500.pa03.model.Player;
+import cs3500.pa03.model.ShipType;
+import cs3500.pa03.view.View;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+/**
+ * Class to act as the controller of the game
+ */
+public class Controller {
+  private final View view;
+  private final Player manualPlayer;
+  private final Player computerPlayer;
+  private List&lt;AgamePiece&gt; manualShips;
+  private List&lt;AgamePiece&gt; computerShips;
+
+  /**
+   * Constructor to set up the Controller with a random for testing
+   *
+   * @param readable   readable to read input from
+   * @param appendable place to output info
+   * @param random     random used for testing
+   */
+<span class="fc" id="L34">  public Controller(Readable readable, Appendable appendable, Random random) {</span>
+<span class="fc" id="L35">    this.view = new View(appendable, readable);</span>
+<span class="fc" id="L36">    manualPlayer = new ManualPlayer(new ManualPlayerController(this.view), random);</span>
+<span class="fc" id="L37">    computerPlayer = new AiPlayer(random);</span>
+<span class="fc" id="L38">  }</span>
+
+  /**
+   * Constructor to initialize the players and set up the view
+   *
+   * @param readable   readable used for getting input
+   * @param appendable appendable to output info
+   */
+<span class="nc" id="L46">  public Controller(Readable readable, Appendable appendable) {</span>
+<span class="nc" id="L47">    this.view = new View(appendable, readable);</span>
+<span class="nc" id="L48">    manualPlayer = new ManualPlayer(new ManualPlayerController(this.view));</span>
+<span class="nc" id="L49">    computerPlayer = new AiPlayer();</span>
+<span class="nc" id="L50">  }</span>
+
+  /**
+   * Method to get the board dimensions between 6 and 15 from the user
+   *
+   * @return returns array of int size 2 as x and y
+   */
+  private int[] getBoardDimensionsFromUser() {
+<span class="fc" id="L58">    view.displayMessage(&quot;Please enter board dimensions from 6 to 15&quot;);</span>
+<span class="fc" id="L59">    int x = view.getInt();</span>
+<span class="fc" id="L60">    int y = view.getInt();</span>
+
+<span class="fc" id="L62">    int[] dimensions = {x, y};</span>
+
+<span class="fc bfc" id="L64" title="All 2 branches covered.">    while (!validSize(dimensions)) {</span>
+<span class="fc" id="L65">      view.displayMessage(&quot;You entered invalid inputs, please enter board dimensions &quot;</span>
+          + &quot;from 6 to 15&quot;);
+<span class="fc" id="L67">      x = view.getInt();</span>
+<span class="fc" id="L68">      y = view.getInt();</span>
+<span class="fc" id="L69">      dimensions = new int[] {x, y};</span>
+    }
+<span class="fc" id="L71">    return dimensions;</span>
+
+  }
+
+  /**
+   * Insures the input is in the range of 6 and 15 for both the x and y
+   *
+   * @param size inputted dimensions
+   * @return returns a boolean that says if the dimensions are valid
+   */
+  private boolean validSize(int[] size) {
+<span class="fc bfc" id="L82" title="All 8 branches covered.">    return size[0] &lt;= 15 &amp;&amp; size[0] &gt;= 6 &amp;&amp; size[1] &lt;= 15 &amp;&amp; size[1] &gt;= 6;</span>
+  }
+
+  /**
+   * Gets the fleet from the user
+   *
+   * @param height the height of the board
+   * @param width  the width of the board
+   * @return returns the fleet as an array of ints with the order being
+   *         [Carrier, Battleship, Destroyer, Submarine]
+   */
+  private int[] getShipsFromUser(int height, int width) {
+<span class="fc" id="L94">    int limit = Math.min(height, width);</span>
+<span class="fc" id="L95">    view.displayMessage(&quot;Please enter your fleet size in order of &quot;</span>
+        + &quot;[Carrier, Battleship, Destroyer, Submarine]&quot;);
+<span class="fc" id="L97">    view.displayMessage(&quot;Your max fleet size is less than &quot; + limit);</span>
+<span class="fc" id="L98">    int carrier = view.getInt();</span>
+<span class="fc" id="L99">    int battle = view.getInt();</span>
+<span class="fc" id="L100">    int destroy = view.getInt();</span>
+<span class="fc" id="L101">    int sub = view.getInt();</span>
+
+<span class="fc" id="L103">    int[] ships = {carrier, battle, destroy, sub};</span>
+
+<span class="fc bfc" id="L105" title="All 2 branches covered.">    while (!validShips(ships, limit)) {</span>
+<span class="fc" id="L106">      view.displayMessage(&quot;You entered invalid an invalid fleet&quot;);</span>
+<span class="fc" id="L107">      view.displayMessage(&quot;Please enter your fleet size in order of &quot;</span>
+          + &quot;[Carrier, Battleship, Destroyer, Submarine]&quot;);
+<span class="fc" id="L109">      view.displayMessage(&quot;Your max fleet size is less than &quot; + limit);</span>
+
+<span class="fc" id="L111">      carrier = view.getInt();</span>
+<span class="fc" id="L112">      battle = view.getInt();</span>
+<span class="fc" id="L113">      destroy = view.getInt();</span>
+<span class="fc" id="L114">      sub = view.getInt();</span>
+
+<span class="fc" id="L116">      ships = new int[] {carrier, battle, destroy, sub};</span>
+
+    }
+
+<span class="fc" id="L120">    return ships;</span>
+  }
+
+  /**
+   * Checks if the fleet is valid
+   *
+   * @param ships the fleet as an array of ints in [Carrier, Battleship, Destroyer, Submarine]
+   *              order
+   * @param limit the max amount of ships allowed
+   * @return returns boolean saying if the ships are valid or not
+   */
+  private boolean validShips(int[] ships, int limit) {
+<span class="fc" id="L132">    int sum = 0;</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">    for (int shipAmount : ships) {</span>
+<span class="fc" id="L134">      sum += shipAmount;</span>
+
+<span class="fc bfc" id="L136" title="All 2 branches covered.">      if (shipAmount == 0) {</span>
+<span class="fc" id="L137">        return false;</span>
+      }
+    }
+
+<span class="fc bfc" id="L141" title="All 2 branches covered.">    return sum &lt;= limit;</span>
+  }
+
+  /**
+   * Creates the specifications for the player's to make the ships
+   *
+   * @param fleet fleet as an array of ints in [Carrier, Battleship, Destroyer, Submarine]
+   *              order
+   * @return hashmap of how many ships for each type
+   */
+  private HashMap&lt;ShipType, Integer&gt; specifactions(int[] fleet) {
+<span class="fc" id="L152">    HashMap&lt;ShipType, Integer&gt; specifications = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">    for (int i = 0; i &lt; 4; i++) {</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">      if (i == 0) {</span>
+<span class="fc" id="L155">        specifications.put(ShipType.CARRIER, fleet[i]);</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">      } else if (i == 1) {</span>
+<span class="fc" id="L157">        specifications.put(ShipType.BATTLESHIP, fleet[i]);</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">      } else if (i == 2) {</span>
+<span class="fc" id="L159">        specifications.put(ShipType.DESTROYER, fleet[i]);</span>
+      } else {
+<span class="fc" id="L161">        specifications.put(ShipType.SUBMARINE, fleet[i]);</span>
+      }
+    }
+
+<span class="fc" id="L165">    return specifications;</span>
+  }
+
+  /**
+   * Method to play the game
+   */
+  public void playGame() {
+<span class="fc" id="L172">    view.displayMessage(&quot;Welcome to Battleship Salvo&quot;);</span>
+
+<span class="fc" id="L174">    int[] dimesions = getBoardDimensionsFromUser();</span>
+<span class="fc" id="L175">    int[] fleet = getShipsFromUser(dimesions[0], dimesions[1]);</span>
+<span class="fc" id="L176">    Map&lt;ShipType, Integer&gt; specs = specifactions(fleet);</span>
+
+<span class="fc" id="L178">    manualShips = manualPlayer.setup(dimesions[0], dimesions[1], specs);</span>
+<span class="fc" id="L179">    computerShips = computerPlayer.setup(dimesions[0], dimesions[1], specs);</span>
+
+    List&lt;Coord&gt; aiShots;
+    List&lt;Coord&gt; userShots;
+
+    List&lt;Coord&gt; aiSuccesfulShots;
+    List&lt;Coord&gt; userSuccessfulShots;
+
+
+<span class="fc bfc" id="L188" title="All 2 branches covered.">    while (!gameEnd()) {</span>
+<span class="fc" id="L189">      userShots = manualPlayer.takeShots();</span>
+<span class="fc" id="L190">      aiShots = computerPlayer.takeShots();</span>
+
+<span class="fc" id="L192">      aiSuccesfulShots = manualPlayer.reportDamage(aiShots);</span>
+<span class="fc" id="L193">      userSuccessfulShots = computerPlayer.reportDamage(userShots);</span>
+
+<span class="fc" id="L195">      manualPlayer.successfulHits(userSuccessfulShots);</span>
+<span class="fc" id="L196">      computerPlayer.successfulHits(aiSuccesfulShots);</span>
+    }
+<span class="fc" id="L198">    endGame();</span>
+<span class="fc" id="L199">  }</span>
+
+  /**
+   * Method to tell if all the ships are destroyed in the given list of ships
+   *
+   * @param ships list of ships
+   * @return returns boolean of if all the ships are destroyed
+   */
+  private boolean allDestroyed(List&lt;AgamePiece&gt; ships) {
+<span class="fc bfc" id="L208" title="All 2 branches covered.">    for (AgamePiece ship : ships) {</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">      if (!ship.isDestroyed()) {</span>
+<span class="fc" id="L210">        return false;</span>
+      }
+<span class="fc" id="L212">    }</span>
+<span class="fc" id="L213">    return true;</span>
+  }
+
+  /**
+   * Method to determine if the game is done
+   *
+   * @return returns boolean of if the game is done
+   */
+  private boolean gameEnd() {
+<span class="fc bfc" id="L222" title="All 4 branches covered.">    return allDestroyed(computerShips) || allDestroyed(manualShips);</span>
+  }
+
+  /**
+   * Method to output statements of the end of the game and the result
+   */
+  private void endGame() {
+<span class="pc bpc" id="L229" title="1 of 4 branches missed.">    if (allDestroyed(manualShips) &amp;&amp; allDestroyed(computerShips)) {</span>
+<span class="nc" id="L230">      manualPlayer.endGame(GameResult.DRAW, &quot;You and the other player destroyed &quot;</span>
+          + &quot;all of you ships at the same time&quot;);
+<span class="nc" id="L232">      computerPlayer.endGame(GameResult.DRAW, &quot;You and the other player destroyed &quot;</span>
+          + &quot;all of you ships at the same time&quot;);
+<span class="pc bpc" id="L234" title="1 of 4 branches missed.">    } else if (allDestroyed(manualShips) &amp;&amp; !allDestroyed(computerShips)) {</span>
+<span class="fc" id="L235">      computerPlayer.endGame(GameResult.WIN, &quot;You destroyed all of the other players ships&quot;);</span>
+<span class="fc" id="L236">      manualPlayer.endGame(GameResult.LOSE, &quot;The other player destroyed all of your ships&quot;);</span>
+<span class="pc bpc" id="L237" title="2 of 4 branches missed.">    } else if (!allDestroyed(manualShips) &amp;&amp; allDestroyed(computerShips)) {</span>
+<span class="fc" id="L238">      manualPlayer.endGame(GameResult.WIN, &quot;You destroyed all of the other players ships&quot;);</span>
+<span class="fc" id="L239">      computerPlayer.endGame(GameResult.LOSE, &quot;The other player destroyed all of your ships&quot;);</span>
+    }
+<span class="fc" id="L241">  }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

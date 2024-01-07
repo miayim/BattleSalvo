@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="cs3500.pa03.model.AgamePieceTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-06-13T15:58:59" hostname="Mias-MacBook-Pro.local" time="0.004">
+  <properties/>
+  <testcase name="isDestroyed()" classname="cs3500.pa03.model.AgamePieceTest" time="0.001"/>
+  <testcase name="testToString()" classname="cs3500.pa03.model.AgamePieceTest" time="0.0"/>
+  <testcase name="symbol()" classname="cs3500.pa03.model.AgamePieceTest" time="0.001"/>
+  <testcase name="hit()" classname="cs3500.pa03.model.AgamePieceTest" time="0.001"/>
+  <testcase name="placeCoordinates()" classname="cs3500.pa03.model.AgamePieceTest" time="0.0"/>
+  <testcase name="isWater()" classname="cs3500.pa03.model.AgamePieceTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

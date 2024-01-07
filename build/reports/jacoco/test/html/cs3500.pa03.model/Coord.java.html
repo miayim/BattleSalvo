@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Coord.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pa04</a> &gt; <a href="index.source.html" class="el_package">cs3500.pa03.model</a> &gt; <span class="el_source">Coord.java</span></div><h1>Coord.java</h1><pre class="source lang-java linenums">package cs3500.pa03.model;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/**
+ * To represent a coordinate on a BattleSalvo board
+ */
+public class Coord {
+
+  public int x;
+
+  public int y;
+
+  @JsonCreator
+<span class="fc" id="L16">  public Coord(@JsonProperty(&quot;x&quot;)int x, @JsonProperty(&quot;y&quot;)int y) {</span>
+<span class="fc" id="L17">    this.x = x;</span>
+<span class="fc" id="L18">    this.y = y;</span>
+<span class="fc" id="L19">  }</span>
+
+  /**
+   * Equals method to see if a coords is equal to another object
+   *
+   * @param o1 Other object
+   * @return boolean of equality
+   */
+  @Override
+  public boolean equals(Object o1) {
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">    if (o1 instanceof Coord) {</span>
+<span class="fc" id="L30">      Coord c1 = (Coord) o1;</span>
+<span class="fc bfc" id="L31" title="All 4 branches covered.">      return c1.x == this.x &amp;&amp; c1.y == this.y;</span>
+    } else {
+<span class="nc" id="L33">      return false;</span>
+    }
+  }
+
+  /**
+   * Overridden ToString method
+   *
+   * @return returns string representation of a coord
+   */
+  public String toString() {
+<span class="nc" id="L43">    return this.x + &quot; &quot; + this.y;</span>
+  }
+
+  /**
+   * Overridden hashcode method
+   *
+   * @return returns an int of the hash code of the object
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L53">    int result = 17;</span>
+<span class="fc" id="L54">    result = 31 * result + x;</span>
+<span class="fc" id="L55">    result = 31 * result + y;</span>
+<span class="fc" id="L56">    return result;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

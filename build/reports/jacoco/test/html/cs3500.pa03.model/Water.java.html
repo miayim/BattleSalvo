@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Water.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pa04</a> &gt; <a href="index.source.html" class="el_package">cs3500.pa03.model</a> &gt; <span class="el_source">Water.java</span></div><h1>Water.java</h1><pre class="source lang-java linenums">package cs3500.pa03.model;
+
+
+
+/**
+ * Class to represent water as a piece
+ */
+public class Water extends AgamePiece {
+  private boolean isHit;
+
+  /**
+   * Constructor to set the piece length to 1
+   */
+  public Water() {
+<span class="fc" id="L15">    super(1);</span>
+<span class="fc" id="L16">    isHit = false;</span>
+<span class="fc" id="L17">  }</span>
+
+  /**
+   * Method to represent the water as a symbol
+   *
+   * @param cord Coord the symbol is being asked about
+   * @return returns a string as the symbol
+   */
+  @Override
+  public String symbol(Coord cord) {
+<span class="fc bfc" id="L27" title="All 2 branches covered.">    if (isHit) {</span>
+<span class="fc" id="L28">      return &quot;M&quot;;</span>
+    } else {
+<span class="fc" id="L30">      return toString();</span>
+    }
+  }
+
+  /**
+   * Method to see if water is water
+   *
+   * @return returns true
+   */
+  @Override
+  public boolean isWater() {
+<span class="fc" id="L41">    return true;</span>
+  }
+
+  /**
+   * Returns the representation of water before it was hit
+   *
+   * @return returns &quot;~&quot;
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L51">    return &quot;~&quot;;</span>
+  }
+
+  /**
+   * Method to hit water
+   *
+   * @param coord Coord on the piece getting hit
+   */
+  @Override
+  public void hit(Coord coord) {
+<span class="fc" id="L61">    this.isHit = true;</span>
+<span class="fc" id="L62">  }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

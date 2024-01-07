@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="10.10.0">
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa04/controller/ProxyControllerTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa04/controller/AiControllerTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa04/controller/MockSocket.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa04/json/JoinArgumentsJsonTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa04/json/VolleyJsonTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa04/json/MessageJsonTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa04/json/ShipJsonTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa04/json/EndGameArgumentsTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa04/json/JsonUtilsTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa04/json/FleetJsonTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa04/json/FleetSpecJsonTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa03/Interaction.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa03/controller/ControllerTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa03/controller/ManualPlayerControllerTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa03/InputInteraction.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa03/model/OpponentBoardTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa03/model/AgamePieceTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa03/model/AiPlayerTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa03/model/MyBoardTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa03/TestAuto.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa03/view/ViewTest.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa03/view/MockAppendable.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/test/java/cs3500/pa03/PrintInteraction.java">
+</file>
+</checkstyle>

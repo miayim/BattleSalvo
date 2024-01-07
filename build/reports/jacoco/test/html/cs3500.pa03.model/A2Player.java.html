@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>A2Player.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pa04</a> &gt; <a href="index.source.html" class="el_package">cs3500.pa03.model</a> &gt; <span class="el_source">A2Player.java</span></div><h1>A2Player.java</h1><pre class="source lang-java linenums">package cs3500.pa03.model;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+/**
+ * Abstract class to represent a player in a two player game with common methods ManPlayer
+ * and AIPlayer have
+ */
+public abstract class A2Player implements Player {
+  protected final Random random;
+  protected Iboard myBoard;
+  protected Iboard oppBoard;
+  protected ArrayList&lt;AgamePiece&gt; ships;
+  protected int width;
+  protected int height;
+  protected int shotLeft;
+
+  /**
+   * Constructor with a given random for testing
+   *
+   * @param random testing random
+   */
+<span class="fc" id="L26">  public A2Player(Random random) {</span>
+<span class="fc" id="L27">    this.random = random;</span>
+<span class="fc" id="L28">  }</span>
+
+  /**
+   * Constructor that creates random for random needs
+   */
+  public A2Player() {
+<span class="nc" id="L34">    this(new Random());</span>
+<span class="nc" id="L35">  }</span>
+
+  /**
+   * Get the player's name.
+   * NOTE: This may not be important to your implementation for PA03, but it will be later
+   *
+   * @return the player's name
+   */
+  @Override
+  public abstract String name();
+
+  /**
+   * Given the specifications for a BattleSalvo ABoard, return a list of ships with their locations
+   * on the ABoard.
+   *
+   * @param height         the height of the ABoard, range: [6, 15] inclusive
+   * @param width          the width of the ABoard, range: [6, 15] inclusive
+   * @param specifications a map of ship type to the number of occurrences each ship should
+   *                       appear on the ABoard
+   * @return the placements of each ship on the ABoard
+   */
+  @Override
+  public List&lt;AgamePiece&gt; setup(int height, int width, Map&lt;ShipType, Integer&gt; specifications) {
+<span class="fc" id="L58">    ArrayList&lt;AgamePiece&gt; ships = generateShips(specifications);</span>
+<span class="fc" id="L59">    this.myBoard = new MyBoard(height, width, ships, random);</span>
+<span class="fc" id="L60">    this.oppBoard = new OpponentBoard(height, width);</span>
+<span class="fc" id="L61">    this.height = height;</span>
+<span class="fc" id="L62">    this.width = width;</span>
+<span class="fc" id="L63">    this.ships = ships;</span>
+<span class="fc" id="L64">    this.shotLeft = width * height;</span>
+<span class="fc" id="L65">    return ships;</span>
+  }
+
+  /**
+   * Returns this player's shots on the opponent's ABoard. The number of shots returned should
+   * equal the number of ships on this player's ABoard that have not sunk.
+   *
+   * @return the locations of shots on the opponent's ABoard
+   */
+  @Override
+  public abstract List&lt;Coord&gt; takeShots();
+
+  /**
+   * Given the list of shots the opponent has fired on this player's ABoard, report which
+   * shots hit a ship on this player's ABoard.
+   *
+   * @param opponentShotsOnBoard the opponent's shots on this player's ABoard
+   * @return a filtered list of the given shots that contain all locations of shots that hit a
+   *         ship on this ABoard
+   */
+  @Override
+  public List&lt;Coord&gt; reportDamage(List&lt;Coord&gt; opponentShotsOnBoard) {
+<span class="fc" id="L87">    return myBoard.reportDamage(opponentShotsOnBoard);</span>
+  }
+
+  /**
+   * Reports to this player what shots in their previous volley returned from takeShots()
+   * successfully hit an opponent's ship.
+   *
+   * @param shotsThatHitOpponentShips the list of shots that successfully hit the opponent's ships
+   */
+  @Override
+  public void successfulHits(List&lt;Coord&gt; shotsThatHitOpponentShips) {
+<span class="fc" id="L98">    oppBoard.takeDamage(shotsThatHitOpponentShips, Status.HIT);</span>
+<span class="fc" id="L99">  }</span>
+
+  /**
+   * Notifies the player that the game is over.
+   * Win, lose, and draw should all be supported
+   *
+   * @param result if the player has won, lost, or forced a draw
+   * @param reason the reason for the game ending
+   */
+  @Override
+  public abstract void endGame(GameResult result, String reason);
+
+  /**
+   * Method to generate the ships given the specifications
+   *
+   * @param specifications map of ship type to how many ships
+   * @return returns array list of all the ships
+   */
+  private ArrayList&lt;AgamePiece&gt; generateShips(Map&lt;ShipType, Integer&gt; specifications) {
+<span class="fc" id="L118">    ArrayList&lt;ShipType&gt; types = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L119">    types.add(ShipType.CARRIER);</span>
+<span class="fc" id="L120">    types.add(ShipType.BATTLESHIP);</span>
+<span class="fc" id="L121">    types.add(ShipType.SUBMARINE);</span>
+<span class="fc" id="L122">    types.add(ShipType.DESTROYER);</span>
+
+<span class="fc" id="L124">    ArrayList&lt;AgamePiece&gt; ships = new ArrayList&lt;&gt;();</span>
+
+
+<span class="fc bfc" id="L127" title="All 2 branches covered.">    for (ShipType type : types) {</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">      for (int i = 0; i &lt; specifications.get(type); i++) {</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        if (type.equals(ShipType.CARRIER)) {</span>
+<span class="fc" id="L130">          ships.add(new Carrier());</span>
+        }
+
+<span class="fc bfc" id="L133" title="All 2 branches covered.">        if (type.equals(ShipType.BATTLESHIP)) {</span>
+<span class="fc" id="L134">          ships.add(new Battleship());</span>
+        }
+
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        if (type.equals(ShipType.DESTROYER)) {</span>
+<span class="fc" id="L138">          ships.add(new Destroyer());</span>
+        }
+
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        if (type.equals(ShipType.SUBMARINE)) {</span>
+<span class="fc" id="L142">          ships.add(new Submarine());</span>
+        }
+      }
+<span class="fc" id="L145">    }</span>
+<span class="fc" id="L146">    return ships;</span>
+  }
+
+  /**
+   * Method to get the number of shots the user has
+   *
+   * @return returns the number of shots as an int
+   */
+  protected int numOfShots() {
+<span class="fc" id="L155">    int count = 0;</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">    for (AgamePiece ship : ships) {</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">      if (!ship.isDestroyed()) {</span>
+<span class="fc" id="L158">        count += 1;</span>
+      }
+<span class="fc" id="L160">    }</span>
+<span class="fc" id="L161">    return Math.min(shotLeft, count);</span>
+  }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

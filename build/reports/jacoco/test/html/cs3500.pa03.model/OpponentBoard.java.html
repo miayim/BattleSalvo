@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OpponentBoard.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pa04</a> &gt; <a href="index.source.html" class="el_package">cs3500.pa03.model</a> &gt; <span class="el_source">OpponentBoard.java</span></div><h1>OpponentBoard.java</h1><pre class="source lang-java linenums">package cs3500.pa03.model;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Class to represent the opponents board
+ */
+public class OpponentBoard implements Iboard {
+  private final int height;
+  private final int width;
+  private Status[][] board;
+
+  /**
+   * Constructor that sets up the board
+   *
+   * @param height height of the board
+   * @param width  width of the board
+   */
+<span class="fc" id="L21">  public OpponentBoard(int height, int width) {</span>
+<span class="fc" id="L22">    this.height = height;</span>
+<span class="fc" id="L23">    this.width = width;</span>
+<span class="fc" id="L24">    generateBoard(new ArrayList&lt;&gt;());</span>
+<span class="fc" id="L25">  }</span>
+
+  /**
+   * Method to report what shots hit the ships on the board
+   *
+   * @param opponetShots list of shots the opponent sent
+   * @return returns the successful shots
+   */
+  @Override
+  public List&lt;Coord&gt; reportDamage(List&lt;Coord&gt; opponetShots) {
+<span class="fc" id="L35">    ArrayList&lt;Coord&gt; damage = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">    for (int y = 0; y &lt; height; y++) {</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">      for (int x = 0; x &lt; width; x++) {</span>
+<span class="fc" id="L38">        Coord curPoint = new Coord(x, y);</span>
+<span class="pc bpc" id="L39" title="1 of 4 branches missed.">        if (board[y][x].equals(Status.HIT) &amp;&amp; opponetShots.contains(curPoint)) {</span>
+<span class="fc" id="L40">          damage.add(curPoint);</span>
+        }
+      }
+    }
+<span class="fc" id="L44">    return damage;</span>
+  }
+
+  /**
+   * method to generate a board given a list of ships
+   *
+   * @param ships list of ships to place on the board
+   */
+  @Override
+  public void generateBoard(ArrayList&lt;AgamePiece&gt; ships) {
+<span class="fc" id="L54">    this.board = new Status[height][width];</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">    for (int i = 0; i &lt; height; i++) {</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">      for (int j = 0; j &lt; width; j++) {</span>
+<span class="fc" id="L57">        board[i][j] = Status.WATER;</span>
+      }
+    }
+<span class="fc" id="L60">  }</span>
+
+  /**
+   * Method to show the board as a String
+   *
+   * @return returns a string of the board
+   */
+  @Override
+  public String showBoard() {
+<span class="fc" id="L69">    StringBuilder boardString = new StringBuilder();</span>
+
+<span class="fc bfc" id="L71" title="All 2 branches covered.">    for (int y = 0; y &lt; height; y++) {</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">      for (int x = 0; x &lt; width; x++) {</span>
+        String curSymbol;
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (board[y][x].equals(Status.HIT)) {</span>
+<span class="fc" id="L75">          curSymbol = &quot;X&quot;;</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        } else if (board[y][x].equals(Status.MISS)) {</span>
+<span class="fc" id="L77">          curSymbol = &quot;M&quot;;</span>
+        } else {
+<span class="fc" id="L79">          curSymbol = &quot;~&quot;;</span>
+        }
+<span class="fc" id="L81">        boardString.append(curSymbol);</span>
+      }
+<span class="fc" id="L83">      boardString.append(&quot;\n&quot;);</span>
+    }
+
+<span class="fc" id="L86">    return boardString.toString();</span>
+  }
+
+  /**
+   * Method to take damage to the board given the type of damage
+   *
+   * @param opponentShots shots the opponent took
+   * @param damageType    type of damage as an enum Status
+   */
+  @Override
+  public void takeDamage(List&lt;Coord&gt; opponentShots, Status damageType) {
+<span class="fc bfc" id="L97" title="All 2 branches covered.">    for (Coord shot : opponentShots) {</span>
+<span class="fc" id="L98">      board[shot.y][shot.x] = damageType;</span>
+<span class="fc" id="L99">    }</span>
+<span class="fc" id="L100">  }</span>
+
+  /**
+   * Determines if the shot is on the board
+   *
+   * @param coord shot as a coordinate
+   * @return returns if the shot is on the board
+   */
+  @Override
+  public boolean onBoard(Coord coord) {
+<span class="fc bfc" id="L110" title="All 8 branches covered.">    return coord.x &gt;= 0 &amp;&amp; coord.x &lt; width &amp;&amp; coord.y &gt;= 0 &amp;&amp; coord.y &lt; height;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

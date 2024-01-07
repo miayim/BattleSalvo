@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="cs3500.pa04.controller.AiControllerTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2023-06-13T15:58:59" hostname="Mias-MacBook-Pro.local" time="0.001">
+  <properties/>
+  <testcase name="successfulHits()" classname="cs3500.pa04.controller.AiControllerTest" time="0.0"/>
+  <testcase name="endGame()" classname="cs3500.pa04.controller.AiControllerTest" time="0.0"/>
+  <testcase name="setup()" classname="cs3500.pa04.controller.AiControllerTest" time="0.0"/>
+  <testcase name="reportDamage()" classname="cs3500.pa04.controller.AiControllerTest" time="0.0"/>
+  <testcase name="getShots()" classname="cs3500.pa04.controller.AiControllerTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

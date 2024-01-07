@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="cs3500.pa03.controller.ControllerTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-06-13T15:58:59" hostname="Mias-MacBook-Pro.local" time="0.013">
+  <properties/>
+  <testcase name="playGameWin()" classname="cs3500.pa03.controller.ControllerTest" time="0.006"/>
+  <testcase name="playGameLost()" classname="cs3500.pa03.controller.ControllerTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

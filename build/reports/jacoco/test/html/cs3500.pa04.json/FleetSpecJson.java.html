@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FleetSpecJson.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pa04</a> &gt; <a href="index.source.html" class="el_package">cs3500.pa04.json</a> &gt; <span class="el_source">FleetSpecJson.java</span></div><h1>FleetSpecJson.java</h1><pre class="source lang-java linenums">package cs3500.pa04.json;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import cs3500.pa03.model.ShipType;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * To represent attributes of a fleet of ships
+ *
+ * @param carrier    the number of carriers in the fleet
+ * @param battleship the number of battleships in the fleet
+ * @param destroyer  the number of destroyers in the fleet
+ * @param submarine  the number of submarines in the fleet
+ */
+<span class="fc" id="L16">public record FleetSpecJson(</span>
+    @JsonProperty(&quot;CARRIER&quot;) int carrier,
+    @JsonProperty(&quot;BATTLESHIP&quot;) int battleship,
+    @JsonProperty(&quot;DESTROYER&quot;) int destroyer,
+    @JsonProperty(&quot;SUBMARINE&quot;) int submarine
+) {
+
+  /**
+   * Get specs map.
+   *
+   * @return the map
+   */
+  public Map&lt;ShipType, Integer&gt; getSpecs() {
+<span class="fc" id="L29">    HashMap&lt;ShipType, Integer&gt; specs = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L30">    specs.put(ShipType.CARRIER, carrier);</span>
+<span class="fc" id="L31">    specs.put(ShipType.BATTLESHIP, battleship);</span>
+<span class="fc" id="L32">    specs.put(ShipType.DESTROYER, destroyer);</span>
+<span class="fc" id="L33">    specs.put(ShipType.SUBMARINE, submarine);</span>
+
+<span class="fc" id="L35">    return specs;</span>
+
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

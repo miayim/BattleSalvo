@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ManualPlayer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pa04</a> &gt; <a href="index.source.html" class="el_package">cs3500.pa03.model</a> &gt; <span class="el_source">ManualPlayer.java</span></div><h1>ManualPlayer.java</h1><pre class="source lang-java linenums">package cs3500.pa03.model;
+
+import cs3500.pa03.controller.ManualPlayerController;
+import java.util.List;
+import java.util.Random;
+
+/**
+ * Class to represent a manual player
+ */
+public class ManualPlayer extends A2Player {
+  private final ManualPlayerController controller;
+
+  /**
+   * Constructor to take in a controller and a random for testing
+   *
+   * @param c      manual player controller
+   * @param random random for testing
+   */
+  public ManualPlayer(ManualPlayerController c, Random random) {
+<span class="fc" id="L20">    super(random);</span>
+<span class="fc" id="L21">    this.controller = c;</span>
+<span class="fc" id="L22">  }</span>
+
+  /**
+   * Constructor to take in a controller for the player
+   *
+   * @param c manual player controller
+   */
+  public ManualPlayer(ManualPlayerController c) {
+<span class="nc" id="L30">    this(c, new Random());</span>
+<span class="nc" id="L31">  }</span>
+
+  /**
+   * Get the player's name.
+   * NOTE: This may not be important to your implementation for PA03, but it will be later
+   *
+   * @return the player's name
+   */
+  @Override
+  public String name() {
+<span class="nc" id="L41">    return &quot;Manual Player&quot;;</span>
+  }
+
+
+  /**
+   * Returns this player's shots on the opponent's ABoard. The number of shots returned should
+   * equal the number of ships on this player's ABoard that have not sunk.
+   *
+   * @return the locations of shots on the opponent's ABoard
+   */
+  @Override
+  public List&lt;Coord&gt; takeShots() {
+<span class="fc" id="L53">    List&lt;Coord&gt; shots = controller.getShots(numOfShots(), height, width, myBoard, oppBoard);</span>
+
+<span class="fc" id="L55">    super.oppBoard.takeDamage(shots, Status.MISS);</span>
+
+
+<span class="fc" id="L58">    return shots;</span>
+  }
+
+
+  /**
+   * Notifies the player that the game is over.
+   * Win, lose, and draw should all be supported
+   *
+   * @param result if the player has won, lost, or forced a draw
+   * @param reason the reason for the game ending
+   */
+  @Override
+  public void endGame(GameResult result, String reason) {
+<span class="fc" id="L71">    controller.gameResult(result, reason);</span>
+<span class="fc" id="L72">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

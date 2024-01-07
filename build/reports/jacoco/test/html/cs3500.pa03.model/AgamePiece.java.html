@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AgamePiece.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pa04</a> &gt; <a href="index.source.html" class="el_package">cs3500.pa03.model</a> &gt; <span class="el_source">AgamePiece.java</span></div><h1>AgamePiece.java</h1><pre class="source lang-java linenums">package cs3500.pa03.model;
+
+
+import cs3500.pa04.json.ShipJson;
+import java.util.HashMap;
+
+/**
+ * Abstract class to represent a game piece
+ */
+public abstract class AgamePiece implements Jsonable {
+<span class="fc" id="L11">  private final HashMap&lt;Coord, Status&gt; shipStatus = new HashMap&lt;&gt;();</span>
+  private final int length;
+  private Coord[] coordinates;
+  private Direction direction;
+
+  /**
+   * Constructor to set up each piece for how long it is
+   *
+   * @param length length of the piece
+   */
+<span class="fc" id="L21">  AgamePiece(int length) {</span>
+<span class="fc" id="L22">    this.length = length;</span>
+<span class="fc" id="L23">  }</span>
+
+  /**
+   * Method to give the coordinates of where the ship would be placed
+   *
+   * @param cord            starting coordinate
+   * @param placeHorizontal boolean if the ship is placed horizontal
+   * @return returns an array of the placed coordinates
+   */
+  public Coord[] placeCoordinates(Coord cord, boolean placeHorizontal) {
+<span class="fc" id="L33">    int x = cord.x;</span>
+<span class="fc" id="L34">    int y = cord.y;</span>
+<span class="fc" id="L35">    Coord[] points = new Coord[length];</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">    for (int i = 0; i &lt; length; i++) {</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">      if (placeHorizontal) {</span>
+<span class="fc" id="L38">        points[i] = new Coord(x + i, y);</span>
+<span class="fc" id="L39">        direction = Direction.HORIZONTAL;</span>
+      } else {
+<span class="fc" id="L41">        points[i] = new Coord(x, y + i);</span>
+<span class="fc" id="L42">        direction = Direction.VERTICAL;</span>
+
+      }
+    }
+
+<span class="fc" id="L47">    updateCordStatus(points);</span>
+<span class="fc" id="L48">    return points;</span>
+  }
+
+  /**
+   * Method to update the current points of the piece and its status of if it is hit or not
+   */
+  private void updateCordStatus(Coord[] points) {
+<span class="fc" id="L55">    coordinates = points;</span>
+
+<span class="fc bfc" id="L57" title="All 2 branches covered.">    for (Coord coord : points) {</span>
+<span class="fc" id="L58">      shipStatus.put(coord, Status.NOHIT);</span>
+    }
+<span class="fc" id="L60">  }</span>
+
+
+
+  /**
+   * Method to give back the ships string symbol at the given Coord
+   *
+   * @param cord Coord the symbol is being asked about
+   * @return returns a string of what the piece looks like at that Coord
+   */
+  public String symbol(Coord cord) {
+<span class="fc bfc" id="L71" title="All 2 branches covered.">    if (!shipStatus.containsKey(cord)) {</span>
+<span class="fc" id="L72">      throw new IllegalArgumentException(&quot;This coordinate doesn't contain this piece&quot;);</span>
+    }
+<span class="fc bfc" id="L74" title="All 2 branches covered.">    if (shipStatus.get(cord).equals(Status.HIT)) {</span>
+<span class="fc" id="L75">      return &quot;X&quot;;</span>
+    } else {
+<span class="fc" id="L77">      return toString();</span>
+    }
+  }
+
+  /**
+   * Method to determine if the piece is water
+   *
+   * @return returns a boolean if the piece is water
+   */
+  public abstract boolean isWater();
+
+  /**
+   * To string method to get what the piece would look like before a hit
+   *
+   * @return returns a string
+   */
+  public abstract String toString();
+
+  /**
+   * Hits the given Coord on the piece
+   *
+   * @param coord Coord on the piece getting hit
+   */
+  public void hit(Coord coord) {
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">    if (shipStatus.containsKey(coord)) {</span>
+<span class="fc" id="L102">      shipStatus.put(coord, Status.HIT);</span>
+    }
+<span class="fc" id="L104">  }</span>
+
+  /**
+   * Determines if the piece is destroyed or not
+   *
+   * @return boolean of if the piece is destroyed or not
+   */
+  public boolean isDestroyed() {
+<span class="fc bfc" id="L112" title="All 2 branches covered.">    for (Coord cord : coordinates) {</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">      if (shipStatus.get(cord).equals(Status.NOHIT)) {</span>
+<span class="fc" id="L114">        return false;</span>
+      }
+    }
+<span class="fc" id="L117">    return true;</span>
+  }
+
+  /**
+   * Converts a ship to a ShipJson
+   *
+   * @return a ShipJson that represents this ship
+   */
+  public ShipJson toJson() {
+<span class="fc" id="L126">    Coord coord = coordinates[0];</span>
+<span class="fc" id="L127">    return new ShipJson(coord, length, direction);</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

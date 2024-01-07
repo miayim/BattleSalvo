@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="10.10.0">
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa04/Driver.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa04/controller/ProxyController.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa04/controller/AiController.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa04/json/ShipJson.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa04/json/EndGameArguments.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa04/json/FleetJson.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa04/json/VolleyJson.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa04/json/FleetSpecJson.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa04/json/JoinArgumentsJson.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa04/json/MessageJson.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa04/json/SetupRequestRecord.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa04/json/JsonUtils.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/controller/Controller.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/controller/ManualPlayerController.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/GameResult.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/ManualPlayer.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/Status.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/Submarine.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/OpponentBoard.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/ShipType.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/Coord.java">
+<error line="11" column="14" severity="warning" message="Member name &apos;x&apos; must match pattern &apos;^[a-z][a-z0-9][a-zA-Z0-9]*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.MemberNameCheck"/>
+<error line="13" column="14" severity="warning" message="Member name &apos;y&apos; must match pattern &apos;^[a-z][a-z0-9][a-zA-Z0-9]*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.MemberNameCheck"/>
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/Water.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/StackImpl.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/MyBoard.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/A2Player.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/Player.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/AiPlayer.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/AgamePiece.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/Destroyer.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/Iboard.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/Battleship.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/Jsonable.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/Carrier.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/Direction.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/model/Stack.java">
+</file>
+<file name="/Users/miayim/Desktop/CS3500D/pa04-benandmia/src/main/java/cs3500/pa03/view/View.java">
+</file>
+</checkstyle>
